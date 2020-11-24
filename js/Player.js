@@ -1,5 +1,9 @@
 class Player {
-  constructor(){}
+  constructor(){
+    this.index=null;
+    this.distance=0;
+    this.name=null;
+  }
 
   getCount(){
     var playerCountRef = database.ref('playerCount');
@@ -14,10 +18,21 @@ class Player {
     });
   }
 
-  update(name){
-    var playerIndex = "player" + playerCount;
+  update(){
+    var playerIndex = "players/player" + this.index;
     database.ref(playerIndex).set({
-      name:name
+      name:this.name,
+      distance:this.distance
     });
+  }
+
+  //static functions are called by classes and not called by objects.
+//static function are not attached to each of the objects and does not involve any particular objects.
+static getPlayerInfo(){
+    var playerInfoRef=database.ref('players');
+    //=> finds the function to the original object which calls it
+    playerInfoRef.on("value",(data)=>{
+      allPlayers=data.val();
+    }) 
   }
 }
